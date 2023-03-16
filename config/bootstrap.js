@@ -9,13 +9,15 @@
  * https://sailsjs.com/config/bootstrap
  */
 
+
+
 module.exports.bootstrap = async function() {
 
   // Import dependencies
   var path = require('path');
 
   // This bootstrap version indicates what version of fake data we're dealing with here.
-  var HARD_CODED_DATA_VERSION = 2;
+  var HARD_CODED_DATA_VERSION = 6;
 
   // This path indicates where to store/look for the JSON file that tracks the "last run bootstrap info"
   // locally on this development computer (if we happen to be on a development computer).
@@ -59,12 +61,29 @@ module.exports.bootstrap = async function() {
   }//∞
 
   // By convention, this is a good place to set up fake data during development.
-  await User.createEach([
-    { emailAddress: 'admin@example.com', fullName: 'Ryan Dahl', isSuperAdmin: true, password: await sails.helpers.passwords.hashPassword('abc123') },
-    { emailAddress: 'diambujeannot@gmail.com', fullName: 'Diambu Jeannot', isSuperAdmin: true, password: await sails.helpers.passwords.hashPassword('jean123') },
-    { emailAddress: 'phuna@gmail.com', fullName: 'Phuna jonatahan', isSuperAdmin: true, password: await sails.helpers.passwords.hashPassword('jonathan') },
-  ]);
 
+
+  var ryanD = await User.create( { emailAddress: 'admin@example.com', fullName: 'Ryan Dahl', isSuperAdmin: true, password: await sails.helpers.passwords.hashPassword('abc123') }).fetch();
+  var claudeBs = await User.create({emailAddress: 'jeanclaudebosuku@gmail.com', fullName: 'jean-claude bosuku', password: await sails.helpers.passwords.hashPassword('abc123')}).fetch();
+  var roseBs = await User.create({emailAddress: 'rosekonde@gmail.com', fullName: 'rosalie konde', password: await sails.helpers.passwords.hashPassword('abc123')}).fetch();
+  var jewelBs = await User.create({emailAddress: 'bjxbosuku@gmail.com', fullName: 'bijoux bosuku', password: await sails.helpers.passwords.hashPassword('abc123')}).fetch();
+  var joelBs = await User.create({emailAddress: 'joelbosuku@gmail.com', fullName: 'joel bosuku', password: await sails.helpers.passwords.hashPassword('abc123')}).fetch();
+
+  await User.addToCollection(claudeBs.id, 'friends', [roseBs.id, jewelBs.id, joelBs.id, ryanD.id]);
+
+  await Thing.createEach([
+    {label: 'My yacht at monaco', owner: jewelBs.id},
+    {label: 'A milk factory', owner: joelBs.id},
+    {label: 'My awesome mansion', owner: claudeBs.id},
+    {label: 'A range rover evoque', owner: roseBs.id},
+    {label: 'A yellow jacket', owner: joelBs.id},
+    {label: 'Knight in a beach', owner: jewelBs.id},
+    {label: 'My yacht at monaco', owner: jewelBs.id},
+    {label: 'A milk factory', owner: joelBs.id},
+    {label: 'My amazing home', owner: claudeBs.id},
+    {label: 'A range rover evoque', owner: roseBs.id},
+    {label: 'A yellow jacket', owner: joelBs.id},
+  ]);
   // Save new bootstrap version
   await sails.helpers.fs.writeJson.with({
     destination: bootstrapLastRunInfoPath,

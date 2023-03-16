@@ -1,3 +1,4 @@
+
 /* eslint-disable quotes */
 module.exports = {
   friendlyName: "View available things",
@@ -11,12 +12,20 @@ module.exports = {
   },
 
   fn: async function (inputs, exits) {
-    
+
+    var me=await User.findOne({
+      id: this.req.me.id
+    }).populate('friends');
+
+    var friendIds = _.pluck(me.friends, 'id');
+
     var things = await Thing.find({
-      owner: this.req.me.id,
+      or: [
+        { owner: this.req.me.id,},
+        { owner: {in: friendIds}}
+      ]
     });
 
-    // return { things };
     return exits.success({ things });
   },
 };
