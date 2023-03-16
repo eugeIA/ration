@@ -16,7 +16,7 @@
         </span>
         </div>
         <span class="label" v-if="thing.label">{{ thing.label }}<br></span>
-        <small class="owner text-secondary" v-if="thing.owner.id !== me.id"><span class="fa fa-home mr-1"></span>
+        <small class="owner text-secondary" v-if="thing.owner.id === me.id"><span class="fa fa-home mr-1"></span>
           Mine</small>
         <small class="owner text-primary" v-if="thing.owner.id === me.id">{{ thing.owner.fullName }}</small>
       </div>
