@@ -11,7 +11,7 @@
       <div v-for="thing in things" class="card" :key="'thing'+thing.id">
         <div class="card-options">
           <span  class="options-button" data-toggle="tooltip" data-placement="top" title="Delete"
-          @click="clickDeleteThing(thing.id)" :v-if="thing.owner.id === me.id" >
+          v-on:click="clickDeleteThing(thing.id)" :v-if="thing.owner.id === me.id" >
           <span class="fa fa-trash-o text-danger"></span>
         </span>
         </div>
@@ -25,8 +25,25 @@
       to got started!</p></div>
   </div>  
 <% /* "Confirm Delete Thing Modal" */ %>  
-  <modal v-if="confirmDeleteThingModalOpen">
-    <h1>Hello!</h1>
+  <modal v-if="confirmDeleteThingModalOpen && selectedThing" v-cloak key="delete"
+  @close="closeDeleteThingModal()">
+  <ajax-form action="destroyOneThing" :syncing.sync="syncing" :cloud-error.sync="cloudError" :handle-parsing="handleParsingDeleteThingForm" @submitted="submittedDeleteThingForm()" >
+    <div class="modal-header">
+      <h3 class="modal-title">Remove this item?</h3>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span>&times</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to remove this {{selectedThing.label || 'item'}}?</p>
+      <p>This item will not no longer be available to share with friends.</p>
+    </div>
+    <div class="modal-footer">
+      <button data-dismiss="modal" class="btn btn-outline-secondary nr-1">Nevermind</button>
+      <button type="submit" class="btn btn-danger nl-1">Remove</button>
+    </div>
+  </ajax-form>
+    
   </modal>  <!-- <h1>TODO: Implement this page.</h1>
   <p>(See also <em>assets/styles/pages/things/available-things.less</em>, <em>assets/js/pages/things/available-things.page.js</em>, and <em>api/controllers/things/view-available-things.js</em>.)</p> -->
 </div>
