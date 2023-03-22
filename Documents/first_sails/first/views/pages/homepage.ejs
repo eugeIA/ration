@@ -1,0 +1,42 @@
+<div id="homepage" v-cloak>
+  
+  <div class="d-flex align-items-center p-2">
+    <div class="accroche-side" style="width: 50vw;padding-left: 10vw; ">
+      <h2 style="font-size: 350%;">Welcome to First</h2>
+      <p>With us see the world in the better way</p>
+      <button @click="clickStartButton" style="background-color: orangered; border-radius: 1rem; height: 10vh; width: 13.5vw; color: white; border: none; font-size: 150%;">Start with us</button>
+    </div>
+    <div>
+      <img src="/images/rafiki.png" alt="app illustration home page" style="height: 75vh;">
+    </div>
+  </div>
+  
+  <modal v-if="loginModalOpen" @close="closeStartModal()">
+    <div class="d-flex flex-column align-items-center">
+       <h1 class="text-center" style="font-size: 150%;">Sign in to your count </h1>
+     <div class="form-side">
+      <ajax-form action="login"  :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-data="formData" :form-rules="formRules" :form-errors.sync="formErrors" @submitted="submittedForm()">
+        <div class="form-group">
+          <input type="email" class="form-control" placeholder="Email address" :class="[formErrors.emailAddress ? 'is-invalid' : '']" v-model.trim="formData.emailAddress" autocomplete="email" focus-first>
+          <div class="invalid-feedback" v-if="formErrors.emailAddress">Please provide a valid email address.</div>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" placeholder="Password" :class="[formErrors.password ? 'is-invalid' : '']" v-model.trim="formData.password" autocomplete="current-password">
+          <div class="invalid-feedback" v-if="formErrors.password">Please enter your password.</div>
+        </div>
+        <div class="form-group form-check">
+          <input class="form-check-input" type="checkbox" id="remember" name="rememberMe" v-model="formData.rememberMe"/>
+          <label class="form-check-label" for="remember">Remember me</label>
+        </div>
+        <cloud-error v-if="cloudError==='badCombo'">The credentials you entered are not associated with an account. Please check your email and/or password and try again.</cloud-error>
+        <cloud-error v-else-if="cloudError"></cloud-error>
+        <div class="form-group">
+          <ajax-button :syncing="syncing" class="btn-dark btn-lg btn-block">Sign in</ajax-button>
+        </div>
+
+      </ajax-form>
+     </div>  
+    </div>
+  </modal>
+</div>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

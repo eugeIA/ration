@@ -1,0 +1,26 @@
+<div id="req-form" v-cloak>
+
+  <ajax-form action="product" :syncing.sync="syncing" :cloud-error.sync="cloudError"  @submitted="submittedForm($event)" :handle-parsing="handleParsingForm">
+    
+      <h1 style="font-size: 150%; margin-bottom: 3vh; margin-top: 3vh; text-align: center;">Publier vos marchandises with <span style="color: blue;">F</span><span style="color: yellow;">i</span>r<span style="color: red">s</span><span style="color: green">t</span></h1>
+      <div class="form-side d-flex align-items-center flex-column">
+        <div class="upload-side d-flex flex-column align-items-center">
+          <img v-if="formData.previewImageSrc" alt="A preview of the selected item" :src="formData.previewImageSrc" height="80vh"/>
+          <img v-else src="/images/blank-profile.png" alt="blank-profile" height="80vh" style="margin-bottom: 1.5vh;">
+          <div class="file-upload-button btn btn-sm" style="display: flex; justify-content: center; position: relative;">
+            <label class="button-text bg-dark border btn text-light">upload an image of product</label>
+            <input type="file" accept="image/*" style="opacity: 0; position: absolute; align-self: center;" @change="changeFileInput($event.target.files)"/>
+          </div>
+        </div>
+        <div class="input-side d-flex flex-column g-1">
+          <input type="text" placeholder="Product description" style="margin-bottom: 2vh;" v-model="formData.description">
+          
+          <input type="text" placeholder="Price of the product" v-model="formData.price">
+        </div>
+        <ajax-button type="submit" :syncing="syncing" style="background-color: orangered; height: 5vh; color: white; display: flex; justify-content: center; align-items: center; margin-top: 2vh; width: 15vw; font-size: 120%;">Post the product</ajax-button>
+      </div>
+  
+  </ajax-form>
+  
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>
